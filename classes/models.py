@@ -6,6 +6,7 @@ class Course(models.Model):
 
 
 class Lecture(models.Model):
+    course = models.ForeignKey(Course ,  on_delete=models.CASCADE, related_name ='lectures') 
     name = models.CharField(max_length=30)
 
     def __str__(self):
@@ -21,6 +22,11 @@ class Slide(models.Model):
 
 
 class Assignment(models.Model):
+    lecrure = models.OneToOneField(
+        Lecture,
+        on_delete=models.CASCADE,
+        primary_key=True,
+    )
     name = models.CharField(max_length=30)
     link = models.URLField()
 
@@ -30,6 +36,6 @@ class Assignment(models.Model):
 
 class Tag(models.Model):
     name = models.CharField(max_length=30)
-
+    courses = models.ManyToManyField(Course, related_name='tags')
     def __str__(self):
         return self.name
